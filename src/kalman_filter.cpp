@@ -30,6 +30,9 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 	if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
 		// define predicted position and speed
 		VectorXd z_pred = H_ * x_;
+
+		// Update measurements
+		VectorXd y = z - z_pred;
 	}
 	// Laser
 	else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
@@ -47,9 +50,15 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 		// define predicted position and speed
 		VectorXd z_pred(3);
 		z_pred << rho, phi, rho_dot;
+
+		// Update measurements
+		VectorXd y = z - z_pred;
+
+		// Normalize angle
+		double width = 2 * M_PI; //
+		double offsetValue = y(1) + M_PI; // value relative to 0
+		y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
 	}
-	// Update measurements
-	VectorXd y = z - z_pred;
 
 	MatrixXd PHt = P_ * H_.transpose();
 	MatrixXd S = H_ * PHt + R_;
@@ -60,12 +69,4 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
   int x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
   P_ = (I - K * H_) * P_;
-
-	//Laser
-	if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
-		// Normalize angle
-		double width = 2 * M_PI; //
-		double offsetValue = y(1) + M_PI; // value relative to 0
-		y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
-	}
 }
