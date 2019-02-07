@@ -26,11 +26,10 @@ void KalmanFilter::Predict() {
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
-void KalmanFilter::Update(MeasurementPackage &meas_package) {
-	VectorXd z = meas_package.raw_measurements_;
+void KalmanFilter::Update(const enum &sensor_type, const VectorXd &z) {
 
 	// Radar
-	if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+	if (sensor_type == MeasurementPackage::RADAR) {
 		cout << 'R' << endl;
 		// define predicted position and speed
 		VectorXd z_pred = H_ * x_;
@@ -49,7 +48,7 @@ void KalmanFilter::Update(MeasurementPackage &meas_package) {
 		P_ = (I - K * H_) * P_;
 	}
 	// Laser
-	else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
+	else if (sensor_type == MeasurementPackage::LASER) {
 		cout << 'L' << endl;
 		// Get components of predicted state
 		float px = x_(0);
