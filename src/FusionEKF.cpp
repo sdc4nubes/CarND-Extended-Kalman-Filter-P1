@@ -71,7 +71,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &meas_package) {
     float vy = 0.0;
     // Radar
     if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
-      cout << "EKF : First measurement RADAR" << endl;
+      // cout << "EKF : First measurement RADAR" << endl;
 
       // Get polar coordinates
       float rho = meas_package.raw_measurements_[0]; // range
@@ -85,7 +85,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &meas_package) {
     }
     // Laser
     else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
-      cout << "EKF : First measurement LASER" << endl;
+      // cout << "EKF : First measurement LASER" << endl;
       // Get Cartesian coordinates
       px = meas_package.raw_measurements_[0];
       py = meas_package.raw_measurements_[1];
