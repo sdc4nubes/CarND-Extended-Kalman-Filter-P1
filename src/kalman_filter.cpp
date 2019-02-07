@@ -23,7 +23,7 @@ void KalmanFilter::Predict() {
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
-void KalmanFilter::Update(const MeasurementPackage &meas_package) {
+void KalmanFilter::Update(MeasurementPackage &meas_package) {
 	VectorXd z = meas_package.raw_measurements_
 
 	// Radar
