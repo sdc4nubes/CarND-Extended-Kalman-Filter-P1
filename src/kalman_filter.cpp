@@ -27,8 +27,8 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 	VectorXd z = meas_package.raw_measurements_;
 
 	// Radar
-	std::cout << meas_package.sensor_type_ << std::endl;
 	if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
+		cout << 'R' << endl;
 		// define predicted position and speed
 		VectorXd z_pred = H_ * x_;
 
@@ -47,6 +47,7 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 	}
 	// Laser
 	else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
+		cout << 'L' << endl;
 		// Get components of predicted state
 		float px = x_(0);
 		float py = x_(1);
