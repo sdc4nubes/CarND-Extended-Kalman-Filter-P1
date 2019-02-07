@@ -24,7 +24,7 @@ void KalmanFilter::Predict() {
 }
 
 void KalmanFilter::Update(MeasurementPackage meas_package) {
-	VectorXd z = meas_package.raw_measurements_
+	VectorXd z = meas_package.raw_measurements_;
 
 	// Radar
 	if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
