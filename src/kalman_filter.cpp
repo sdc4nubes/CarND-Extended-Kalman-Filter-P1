@@ -27,7 +27,7 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 	VectorXd z = meas_package.raw_measurements_;
 
 	// Radar
-	cout << meas_package.sensor_type_ << endl;
+	std::cout << meas_package.sensor_type_ << std::endl;
 	if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
 		// define predicted position and speed
 		VectorXd z_pred = H_ * x_;
