@@ -67,6 +67,7 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 		z_pred << rho, phi, rho_dot;
 
 		// Update measurements
+		cout << 'I am here' << endl;
 		VectorXd y = z - z_pred;
 
 		// Normalize angle
@@ -77,7 +78,7 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 		MatrixXd PHt = P_ * H_.transpose();
 		MatrixXd S = H_ * PHt + R_;
 		MatrixXd K = PHt * S.inverse();
-
+		cout << 'I am here' << endl;
 		// Update state
 		x_ = x_ + (K * y);
 		int x_size = x_.size();
