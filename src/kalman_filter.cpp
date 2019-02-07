@@ -26,7 +26,7 @@ void KalmanFilter::Predict() {
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
-void KalmanFilter::Update(enum &sensor_type, const VectorXd &z) {
+void KalmanFilter::Update(sensor_type, const VectorXd &z) {
 
 	// Radar
 	if (sensor_type == MeasurementPackage::RADAR) {
