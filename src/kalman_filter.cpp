@@ -3,6 +3,8 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
+using namespace std;
+
 KalmanFilter::KalmanFilter() {}
 
 KalmanFilter::~KalmanFilter() {}
