@@ -69,7 +69,7 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 		// Update measurements
 		cout << "I am here" << endl;
 		cout << "z: " << z << endl;
-		cout << "zpred: " << zpred << endl;
+		cout << "z_pred: " << z_pred << endl;
 		VectorXd y = z - z_pred;
 		cout << "I am here" << endl;
 		// Normalize angle
