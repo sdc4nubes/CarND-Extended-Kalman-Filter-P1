@@ -33,6 +33,16 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 
 		// Update measurements
 		VectorXd y = z - z_pred;
+
+		MatrixXd PHt = P_ * H_.transpose();
+		MatrixXd S = H_ * PHt + R_;
+		MatrixXd K = PHt * S.inverse();
+
+		// Update state
+		x_ = x_ + (K * y);
+		int x_size = x_.size();
+		MatrixXd I = MatrixXd::Identity(x_size, x_size);
+		P_ = (I - K * H_) * P_;
 	}
 	// Laser
 	else if (meas_package.sensor_type_ == MeasurementPackage::LASER) {
@@ -58,15 +68,15 @@ void KalmanFilter::Update(MeasurementPackage meas_package) {
 		double width = 2 * M_PI; //
 		double offsetValue = y(1) + M_PI; // value relative to 0
 		y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
+
+		MatrixXd PHt = P_ * H_.transpose();
+		MatrixXd S = H_ * PHt + R_;
+		MatrixXd K = PHt * S.inverse();
+
+		// Update state
+		x_ = x_ + (K * y);
+		int x_size = x_.size();
+		MatrixXd I = MatrixXd::Identity(x_size, x_size);
+		P_ = (I - K * H_) * P_;
 	}
-
-	MatrixXd PHt = P_ * H_.transpose();
-	MatrixXd S = H_ * PHt + R_;
-	MatrixXd K = PHt * S.inverse();
-
-// Update state
-  x_ = x_ + (K * y);
-  int x_size = x_.size();
-  MatrixXd I = MatrixXd::Identity(x_size, x_size);
-  P_ = (I - K * H_) * P_;
 }
