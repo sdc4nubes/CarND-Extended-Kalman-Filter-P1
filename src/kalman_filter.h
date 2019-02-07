@@ -56,7 +56,7 @@ public:
    * Updates the state by using standard Kalman Filter equations
    * @param z The measurement at k+1
    */
-  void Update(const MeasurementPackage &meas_pack);
+  void Update(const MeasurementPackage &meas_package);
 
 };
 
