@@ -1,7 +1,6 @@
 #ifndef KALMAN_FILTER_H_
 #define KALMAN_FILTER_H_
 #include "Eigen/Dense"
-#include "measurement_package.h"
 
 class KalmanFilter {
 public:
@@ -57,7 +56,13 @@ public:
    * Updates the state by using standard Kalman Filter equations
    * @param z The measurement at k+1
    */
-  void Update(int sensor_type, const Eigen::VectorXd &z);
+  void Update(const Eigen::VectorXd &z);
+
+  /**
+   * Updates the state by using Extended Kalman Filter equations
+   * @param z The measurement at k+1
+   */
+  void UpdateEKF(const Eigen::VectorXd &z);
 
 };
 

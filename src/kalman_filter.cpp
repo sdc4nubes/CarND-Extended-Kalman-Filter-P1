@@ -1,10 +1,7 @@
 #include "kalman_filter.h"
-#include <iostream>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
-
-using namespace std;
 
 KalmanFilter::KalmanFilter() {}
 
@@ -21,69 +18,58 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
 }
 
 void KalmanFilter::Predict() {
-// Predict the state
+  // Predict the state
   x_ = F_ * x_;
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
-void KalmanFilter::Update(int sensor_type, const VectorXd &z) {
+void KalmanFilter::Update(const VectorXd &z) {
 
-	// Radar
-	if (sensor_type == MeasurementPackage::RADAR) {
-		cout << 'R' << endl;
-		// define predicted position and speed
-		VectorXd z_pred = H_ * x_;
+  // Update measurements
+  VectorXd z_pred = H_ * x_;
+  VectorXd y = z - z_pred;
+  MatrixXd PHt = P_ * H_.transpose();
+  MatrixXd S = H_ * PHt + R_;
+  MatrixXd K = PHt * S.inverse();
 
-		// Update measurements
-		VectorXd y = z - z_pred;
+  // Update state
+  x_ = x_ + (K * y);
+  int x_size = x_.size();
+  MatrixXd I = MatrixXd::Identity(x_size, x_size);
+  P_ = (I - K * H_) * P_;
+}
 
-		MatrixXd PHt = P_ * H_.transpose();
-		MatrixXd S = H_ * PHt + R_;
-		MatrixXd K = PHt * S.inverse();
+void KalmanFilter::UpdateEKF(const VectorXd &z) {
+  // Get components of predicted state
+  float px = x_(0);
+  float py = x_(1);
+  float vx = x_(2);
+  float vy = x_(3);
 
-		// Update state
-		x_ = x_ + (K * y);
-		int x_size = x_.size();
-		MatrixXd I = MatrixXd::Identity(x_size, x_size);
-		P_ = (I - K * H_) * P_;
-	}
-	// Laser
-	else if (sensor_type == MeasurementPackage::LASER) {
-		cout << 'L' << endl;
-		// Get components of predicted state
-		float px = x_(0);
-		float py = x_(1);
-		float vx = x_(2);
-		float vy = x_(3);
+  // Get components of radar measurement space
+  float rho = sqrt(px * px + py * py);
+  float phi = atan2(py, px);
+  float rho_dot = (rho >= 0.0001 ? (px * vx + py * vy) / rho : 0);
 
-		// Get components of radar measurement space
-		float rho = sqrt(px * px + py * py);
-		float phi = atan2(py, px);
-		float rho_dot = (rho >= 0.0001 ? (px * vx + py * vy) / rho : 0);
+  // define predicted position and speed
+  VectorXd z_pred(3);
+  z_pred << rho, phi, rho_dot;
 
-		// define predicted position and speed
-		VectorXd z_pred(3);
-		z_pred << rho, phi, rho_dot;
+  // Update measurements
+    VectorXd y = z - z_pred;
 
-		// Update measurements
-		cout << "I am here" << endl;
-		cout << "z: " << z << endl;
-		cout << "z_pred: " << z_pred << endl;
-		VectorXd y = z - z_pred;
-		cout << "I am here" << endl;
-		// Normalize angle
-		double width = 2 * M_PI; //
-		double offsetValue = y(1) + M_PI; // value relative to 0
-		y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
-		
-		MatrixXd PHt = P_ * H_.transpose();
-		MatrixXd S = H_ * PHt + R_;
-		MatrixXd K = PHt * S.inverse();
-		
-		// Update state
-		x_ = x_ + (K * y);
-		int x_size = x_.size();
-		MatrixXd I = MatrixXd::Identity(x_size, x_size);
-		P_ = (I - K * H_) * P_;
-	}
+  // Normalize angle
+  double width = 2 * M_PI;   //
+  double offsetValue = y(1) + M_PI;   // value relative to 0
+  y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
+
+  MatrixXd PHt = P_ * H_.transpose();
+  MatrixXd S = H_ * PHt + R_;
+  MatrixXd K = PHt * S.inverse();
+
+  // Update state
+  x_ = x_ + (K * y);
+  int x_size = x_.size();
+  MatrixXd I = MatrixXd::Identity(x_size, x_size);
+  P_ = (I - K * H_) * P_;
 }
