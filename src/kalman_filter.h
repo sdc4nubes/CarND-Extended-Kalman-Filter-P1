@@ -57,7 +57,7 @@ public:
    * Updates the state by using standard Kalman Filter equations
    * @param z The measurement at k+1
    */
-  void Update(enum sensor_type, const Eigen::VectorXd &z);
+  void Update(int sensor_type, const Eigen::VectorXd &z);
 
 };
 
