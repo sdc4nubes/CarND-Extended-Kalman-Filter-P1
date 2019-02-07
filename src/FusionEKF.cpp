@@ -64,7 +64,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     *****************************************************************************/
     if (!is_initialized_) {
         // Initialize ekf_.x
-        cout << "EKF: " << endl;
+        // cout << "EKF: " << endl;
         ekf_.x_ = VectorXd(4);
         ekf_.x_ << 1, 1, 1, 1;
         // Initialize position and velocity
@@ -74,7 +74,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         float vy = 0.0;
         // Radar
         if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
-            cout << "EKF : First measurement RADAR" << endl;
+            // cout << "EKF : First measurement RADAR" << endl;
 
             // Get polar coordinates
             float rho = measurement_pack.raw_measurements_[0]; // range
@@ -88,7 +88,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         }
         // Laser
         else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
-            cout << "EKF : First measurement LASER" << endl;
+            // cout << "EKF : First measurement LASER" << endl;
             // Get Cartesian coordinates
             px = measurement_pack.raw_measurements_[0];
             py = measurement_pack.raw_measurements_[1];
@@ -142,6 +142,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         ekf_.Update(measurement_pack.raw_measurements_);
     }
     // print the output
-    cout << "x_ = " << ekf_.x_ << endl;
-    cout << "P_ = " << ekf_.P_ << endl;
+    // cout << "x_ = " << ekf_.x_ << endl;
+    // cout << "P_ = " << ekf_.P_ << endl;
 }
