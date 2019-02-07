@@ -63,7 +63,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &meas_package) {
   *  Initialize
   *****************************************************************************/
   if (!is_initialized_) {
-    cout << "EKF: " << endl;
+    // cout << "EKF: " << endl;
     // Initialize position and velocity
     float px = 0.0;
     float py = 0.0;
@@ -137,6 +137,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &meas_package) {
 	}
 	ekf_.Update(meas_package);
 	// print the output
-	cout << "x_ = " << ekf_.x_ << endl;
-	cout << "P_ = " << ekf_.P_ << endl;
+	// cout << "x_ = " << ekf_.x_ << endl;
+	// cout << "P_ = " << ekf_.P_ << endl;
 }

@@ -55,7 +55,7 @@ int main()
 
         if (event == "telemetry") {
           // j[1] is the data JSON object
-
+					cout << "I am here" << endl;
           string sensor_measurment = j[1]["sensor_measurement"];
 
           MeasurementPackage meas_package;
@@ -133,7 +133,6 @@ int main()
 					auto msg = "42[\"estimate_marker\"," + msgJson.dump() + "]";
 					// std::cout << msg << std::endl;
 					ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
-					cout << "I am here" << endl;
         }
       } else {
 
