@@ -57,8 +57,8 @@ void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
 		// Update measurements
 		VectorXd y = z - z_pred;
 		// Normalize angle
-		double width = 2 * M_PI;   //
-		double offsetValue = y(1) + M_PI;   // value relative to 0
+		double width = 2 * M_PI;
+		double offsetValue = y(1) + M_PI;
 		y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
 		MatrixXd PHt = P_ * H_.transpose();
 		MatrixXd S = H_ * PHt + R_;
