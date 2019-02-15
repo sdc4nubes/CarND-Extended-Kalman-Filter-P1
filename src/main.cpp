@@ -138,7 +138,7 @@ int main()
         }
       } else {
         
-        //std::string msg = "42[\"manual\",{}]";
+        std::string msg = "42[\"manual\",{}]";
         ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
       }
     }
