@@ -51,14 +51,11 @@ void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
 		float rho = sqrt(px * px + py * py);
 		float phi = atan2(py, px);
 		float rho_dot = (rho >= 0.0001 ? (px * vx + py * vy) / rho : 0);
-
 		// define predicted position and speed
 		VectorXd z_pred(3);
 		z_pred << rho, phi, rho_dot;
-
 		// Update measurements
 		VectorXd y = z - z_pred;
-
 		// Normalize angle
 		double width = 2 * M_PI;   //
 		double offsetValue = y(1) + M_PI;   // value relative to 0
@@ -66,7 +63,6 @@ void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
 		MatrixXd PHt = P_ * H_.transpose();
 		MatrixXd S = H_ * PHt + R_;
 		MatrixXd K = PHt * S.inverse();
-
 		// Update state
 		x_ = x_ + (K * y);
 		int x_size = x_.size();

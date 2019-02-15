@@ -24,7 +24,6 @@ FusionEKF::FusionEKF() {
     R_radar_ << 0.09, 0     , 0   ,
                 0   , 0.0009, 0   ,
                 0   , 0     , 0.09;
-
     // measurement function matrix - laser
     H_laser_ << 1, 0, 0, 0,
                 0, 1, 0, 0;
@@ -75,7 +74,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         // Radar
         if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
             // cout << "EKF : First measurement RADAR" << endl;
-
             // Get polar coordinates
             float rho = measurement_pack.raw_measurements_[0]; // range
             float phi = measurement_pack.raw_measurements_[1]; // bearing
@@ -93,10 +91,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
             px = measurement_pack.raw_measurements_[0];
             py = measurement_pack.raw_measurements_[1];
         }
-
         // Initialize the state ekf_.x_ with the first measurement
         ekf_.x_ << px, py, vx, vy;
-
         // Save first time stamp
         previous_timestamp_ = measurement_pack.timestamp_ ;
         is_initialized_ = true;
@@ -125,7 +121,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                dt_3_2 * noise_ax, 0                , dt_2 * noise_ax  , 0                ,
                0                , dt_3_2 * noise_ay, 0                , dt_2 * noise_ay  ;
     ekf_.Predict();
-
     /*****************************************************************************
     *  Update
     *****************************************************************************/
