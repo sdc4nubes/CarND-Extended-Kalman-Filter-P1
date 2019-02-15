@@ -57,14 +57,6 @@ public:
    * Updates the state by using standard Kalman Filter equations
    * @param z The measurement at k+1
    */
-  void UpdateEKFL(const MeasurementPackage &measurement_pack);
-
-  /**
-   * Updates the state by using Extended Kalman Filter equations
-   * @param z The measurement at k+1
-   */
-  void UpdateEKFR(const MeasurementPackage &measurement_pack);
-
+  void UpdateEKF(const MeasurementPackage &measurement_pack);
 };
-
 #endif /* KALMAN_FILTER_H_ */
