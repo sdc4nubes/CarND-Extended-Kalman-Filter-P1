@@ -23,7 +23,7 @@ void KalmanFilter::Predict() {
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
-void KalmanFilter::UpdateL(const VectorXd &z) {
+void KalmanFilter::UpdateEKFL(const VectorXd &z) {
 
   // Update measurements
   VectorXd z_pred = H_ * x_;
