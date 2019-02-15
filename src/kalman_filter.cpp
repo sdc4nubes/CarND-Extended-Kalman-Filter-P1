@@ -30,14 +30,6 @@ void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
 		z = measurement_pack.raw_measurements_;
 		VectorXd z_pred = H_ * x_;
 		VectorXd y = z - z_pred;
-		MatrixXd PHt = P_ * H_.transpose();
-		MatrixXd S = H_ * PHt + R_;
-		MatrixXd K = PHt * S.inverse();
-		// Update state
-		x_ = x_ + (K * y);
-		int x_size = x_.size();
-		MatrixXd I = MatrixXd::Identity(x_size, x_size);
-		P_ = (I - K * H_) * P_;
 	}
 	else if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
 		// Get components of predicted state
@@ -60,13 +52,13 @@ void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
 		double width = 2 * M_PI;   //
 		double offsetValue = y(1) + M_PI;   // value relative to 0
 		y(1) = (offsetValue - (floor(offsetValue / width) * width)) - M_PI;
-		MatrixXd PHt = P_ * H_.transpose();
-		MatrixXd S = H_ * PHt + R_;
-		MatrixXd K = PHt * S.inverse();
-		// Update state
-		x_ = x_ + (K * y);
-		int x_size = x_.size();
-		MatrixXd I = MatrixXd::Identity(x_size, x_size);
-		P_ = (I - K * H_) * P_;
 	}
+	MatrixXd PHt = P_ * H_.transpose();
+	MatrixXd S = H_ * PHt + R_;
+	MatrixXd K = PHt * S.inverse();
+	// Update state
+	x_ = x_ + (K * y);
+	int x_size = x_.size();
+	MatrixXd I = MatrixXd::Identity(x_size, x_size);
+	P_ = (I - K * H_) * P_;
 }
