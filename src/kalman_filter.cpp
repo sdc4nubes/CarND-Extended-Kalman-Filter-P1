@@ -39,13 +39,14 @@ void KalmanFilter::UpdateEKFL(const VectorXd &z) {
   P_ = (I - K * H_) * P_;
 }
 
-void KalmanFilter::UpdateEKFR(const VectorXd &z) {
+void KalmanFilter::UpdateEKFR(const MeasurementPackage &measurement_pack) {
   // Get components of predicted state
   float px = x_(0);
   float py = x_(1);
   float vx = x_(2);
   float vy = x_(3);
-
+	VectorXd z(3);
+	z = measurement_pack.raw_measurements_;
   // Get components of radar measurement space
   float rho = sqrt(px * px + py * py);
   float phi = atan2(py, px);
