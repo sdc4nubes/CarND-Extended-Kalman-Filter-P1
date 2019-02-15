@@ -23,7 +23,7 @@ void KalmanFilter::Predict() {
   P_ = F_ * P_ * F_.transpose() + Q_;
 }
 
-void KalmanFilter::UpdateEKFR(const VectorXd &z) {
+void KalmanFilter::Update(const VectorXd &z) {
 
   // Update measurements
   VectorXd z_pred = H_ * x_;
@@ -39,7 +39,7 @@ void KalmanFilter::UpdateEKFR(const VectorXd &z) {
   P_ = (I - K * H_) * P_;
 }
 
-void KalmanFilter::UpdateEKFL(const VectorXd &z) {
+void KalmanFilter::UpdateEKF(const VectorXd &z) {
   // Get components of predicted state
   float px = x_(0);
   float py = x_(1);
