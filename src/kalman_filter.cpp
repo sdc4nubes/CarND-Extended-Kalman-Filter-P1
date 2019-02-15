@@ -24,7 +24,7 @@ void KalmanFilter::Predict() {
 }
 
 void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
-	if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+	if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
 		// Update measurements
 		VectorXd z(2);
 		z = measurement_pack.raw_measurements_;
@@ -39,7 +39,7 @@ void KalmanFilter::UpdateEKF(const MeasurementPackage &measurement_pack) {
 		MatrixXd I = MatrixXd::Identity(x_size, x_size);
 		P_ = (I - K * H_) * P_;
 	}
-	else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+	else if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
 		// Get components of predicted state
 		VectorXd z(3);
 		z = measurement_pack.raw_measurements_;
